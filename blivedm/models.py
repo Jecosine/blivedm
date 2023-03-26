@@ -10,6 +10,7 @@ __all__ = (
     'GuardBuyMessage',
     'SuperChatMessage',
     'SuperChatDeleteMessage',
+    'InteractMessage',
 )
 
 
@@ -380,4 +381,58 @@ class SuperChatDeleteMessage:
     def from_command(cls, data: dict):
         return cls(
             ids=data['ids'],
+        )
+
+# TODO: InteractMessage 的数据模型，决定怎么接ws的数据，并存储为object
+@dataclasses.dataclass
+class InteractMessage:
+    """
+    进房消息
+    """
+    
+
+
+
+    
+    timestamp: int = None,
+    """时间戳（毫秒）"""
+    uid: int = None,
+    """用户ID"""
+    room_id: int = None,
+    """房间ID"""
+    msg_type: int = None,
+    """互动形式"""
+    uname: str = None,
+    """用户名"""
+
+    guard_level: int = None,
+    """当前带的勋章，是不是舰队，0非舰队，1总督，2提督，3舰长"""
+
+    medal_level: int = None,
+    """勋章等级"""
+    medal_name: str = None,
+    """勋章名"""
+    medal_room_id: int = None,
+    """勋章房间ID"""
+
+    privilege_type: int = None,
+    """可能是？舰队类型，0非舰队，1总督，2提督，3舰长"""
+
+
+    @classmethod
+    def from_command(cls, data: dict):
+        return cls(
+            timestamp=data['timestamp'],
+            uid=data['uid'],
+            room_id=data['roomid'],
+            msg_type=data['msg_type'],
+            uname=data['uname'],
+
+            guard_level=data['fans_medal']['guard_level'],
+
+            medal_level=data['fans_medal']['medal_level'],
+            medal_name=data['fans_medal']['medal_name'],
+            medal_room_id=data['fans_medal']['anchor_roomid'],
+
+            privilege_type=data['privilege_type'],
         )
