@@ -55,6 +55,11 @@ class DanmakuMessage:
     dm_type: int = None
     """弹幕类型，0文本，1表情，2语音"""
     emoticon_options: Union[dict, str] = None
+
+    # <jecosine> add emots attribute
+    """含官方小表情的文本信息"""
+    emots: dict = None,
+
     """表情参数"""
     voice_config: Union[dict, str] = None
     """语音参数"""
@@ -126,6 +131,14 @@ class DanmakuMessage:
             mcolor = 0
             special_medal = 0
 
+        if info[0][15] is not None:
+            extra = info[0][15].get('extra', '')
+            if len(extra) != 0:
+                extra = json.loads(extra)
+                emots = extra.get('emots', None)
+        else:
+            emots = None
+
         return cls(
             mode=info[0][1],
             font_size=info[0][2],
@@ -137,6 +150,9 @@ class DanmakuMessage:
             bubble=info[0][10],
             dm_type=info[0][12],
             emoticon_options=info[0][13],
+
+            emots=emots,
+
             voice_config=info[0][14],
             mode_info=info[0][15],
 
