@@ -447,7 +447,7 @@ class BLiveClient:
             'uid': self._uid or self.room_owner_uid or 0,
             'roomid': self._room_id,
             'protover': 3,
-            'platform': 'web',
+            'platform': 'danmuji',
             'type': 2
         }
         if self._host_server_token is not None:
